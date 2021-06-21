@@ -14,6 +14,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.OpenApi.Models;
 using Notepad.Application;
 using Notepad.Intrastructure.EFCore;
+using Notepad.Infrastructure.Dapper;
 
 namespace Notepad.Api
 {
@@ -43,6 +44,7 @@ namespace Notepad.Api
 
             services.AddApplication();
             services.AddEFCore(Configuration);
+            services.AddDapper(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

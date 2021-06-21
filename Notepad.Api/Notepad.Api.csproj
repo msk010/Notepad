@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Notepad.Application\Notepad.Application.csproj" />
+    <ProjectReference Include="..\Notepad.Infrastructure.Dapper\Notepad.Infrastructure.Dapper.csproj" />
     <ProjectReference Include="..\Notepad.Intrastructure.EFCore\Notepad.Intrastructure.EFCore.csproj" />
   </ItemGroup>
 
