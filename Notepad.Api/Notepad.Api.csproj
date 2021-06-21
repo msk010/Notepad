@@ -25,10 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Notepad.Application\Notepad.Application.csproj" />
     <ProjectReference Include="..\Notepad.Intrastructure.EFCore\Notepad.Intrastructure.EFCore.csproj" />
   </ItemGroup>

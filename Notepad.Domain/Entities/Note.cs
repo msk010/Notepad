@@ -1,6 +1,7 @@
 ﻿using Notepad.Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Notepad.Domain.Entities
 {
@@ -10,13 +11,15 @@ namespace Notepad.Domain.Entities
         {
             NoteTags = new HashSet<NoteTag>();
         }
-        public Note(string title, string content, int createdById) : base()
+        public Note(string title, string content, List<int> tagIds, int createdById) : base()
         {
             Title = title;
             Content = content;
             CreatedOn = DateTimeOffset.Now;
             UpdatedOn = CreatedOn;
             CreatedById = createdById;
+
+            tagIds.ForEach(AddTag);
         }
 
         public int Id { get; private set; }
@@ -30,11 +33,24 @@ namespace Notepad.Domain.Entities
 
         public virtual ICollection<NoteTag> NoteTags { get; private set; }
 
-        public void Update(string title, string content)
+        public void Update(string title, string content, List<int> tagIds)
         {
             Title = title;
             Content = content;
             UpdatedOn = DateTimeOffset.Now;
+
+            NoteTags.Clear();
+            tagIds.ForEach(AddTag);
+        }
+
+        public void AddTag(int tagId)
+        {
+            NoteTags.Add(new NoteTag(tagId, Id));
+        }
+
+        public bool HasTag(int tagId)
+        {
+            return NoteTags.Any(t => t.TagId == tagId);
         }
     }
 }
