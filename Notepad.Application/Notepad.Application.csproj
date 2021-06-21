@@ -13,9 +13,4 @@
     <ProjectReference Include="..\Notepad.Domain\Notepad.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\TagFeatures\Queries\" />
-    <Folder Include="Features\NoteFeatures\Queries\" />
-  </ItemGroup>
-
 </Project>

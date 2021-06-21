@@ -9,7 +9,12 @@ namespace Notepad.Application.Features.NoteFeatures.Commands
 {
     public class DeleteNoteByIdCommand : IRequest<int>
     {
-        public int Id { get; set; }
+        public DeleteNoteByIdCommand(int id)
+        {
+            Id = id;
+        }
+
+        public int Id { get; private set; }
         public class DeleteProductByIdCommandHandler : IRequestHandler<DeleteNoteByIdCommand, int>
         {
             private readonly INotepadDbContext _context;

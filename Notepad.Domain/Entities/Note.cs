@@ -45,6 +45,11 @@ namespace Notepad.Domain.Entities
 
         public void AddTag(int tagId)
         {
+            if(NoteTags == null)
+            {
+                NoteTags = new HashSet<NoteTag>();
+            }
+
             NoteTags.Add(new NoteTag(tagId, Id));
         }
 

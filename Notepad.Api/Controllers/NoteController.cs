@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notepad.Application.Features.NoteFeatures.Commands;
+using Notepad.Application.Features.NoteFeatures.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,20 @@ namespace Notepad.Api.Controllers
         public NoteController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("list")]
+        public virtual async Task<IActionResult> GetList()
+        {
+            return Ok(await _mediator.Send(new GetAllNotesQuery()));
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public virtual async Task<IActionResult> Get(int id)
+        {
+            return Ok(await _mediator.Send(new GetNoteByIdQuery(id)));
         }
 
         [HttpPost]
@@ -37,7 +52,7 @@ namespace Notepad.Api.Controllers
         [Route("delete/{id}")]
         public virtual async Task<IActionResult> DeleteById(int id)
         {
-            return Ok(await _mediator.Send(new DeleteNoteByIdCommand { Id = id }));
+            return Ok(await _mediator.Send(new DeleteNoteByIdCommand(id)));
         }
     }
 }
