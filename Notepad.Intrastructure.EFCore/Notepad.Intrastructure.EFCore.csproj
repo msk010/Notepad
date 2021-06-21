@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20210621132913_Initial.cs" />
+    <Compile Remove="Migrations\20210621132913_Initial.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Notepad.Application\Notepad.Application.csproj" />
+    <ProjectReference Include="..\Notepad.Domain\Notepad.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

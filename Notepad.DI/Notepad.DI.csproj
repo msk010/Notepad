@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Notepad.Application\Notepad.Application.csproj" />
+    <ProjectReference Include="..\Notepad.Domain\Notepad.Domain.csproj" />
+    <ProjectReference Include="..\Notepad.Infrastructure.Dapper\Notepad.Infrastructure.Dapper.csproj" />
+    <ProjectReference Include="..\Notepad.Intrastructure.EFCore\Notepad.Intrastructure.EFCore.csproj" />
+  </ItemGroup>
+
+</Project>
