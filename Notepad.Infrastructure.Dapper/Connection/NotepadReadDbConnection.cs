@@ -45,5 +45,10 @@ namespace Notepad.Infrastructure.Dapper.Connection
         {
             return (await _dbConnection.QueryAsync(sql, map, param, transaction, splitOn: splitOn)).AsList();
         }
+
+        public async Task<IReadOnlyList<T>> QueryAsync<T>(string sql, Type[] types, Func<object[], T> map, object param = null, IDbTransaction transaction = null, string splitOn = "Id")
+        {
+            return (await _dbConnection.QueryAsync(sql, types, map, param, transaction, splitOn: splitOn)).AsList();
+        }
     }
 }
