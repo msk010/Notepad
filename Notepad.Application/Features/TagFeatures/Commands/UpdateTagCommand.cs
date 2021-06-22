@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Notepad.Application.Interfaces;
-using Notepad.Domain.Entities;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

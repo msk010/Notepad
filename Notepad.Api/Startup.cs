@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Notepad.Application;
 using Notepad.Intrastructure.EFCore;
 using Notepad.Infrastructure.Dapper;
+using FluentValidation.AspNetCore;
 
 namespace Notepad.Api
 {
@@ -41,6 +42,8 @@ namespace Notepad.Api
                     Title = "Notepad",
                 });
             });
+            services.AddMvc();
+            services.AddFluentValidation();
 
             services.AddApplication();
             services.AddEFCore(Configuration);
@@ -76,7 +79,6 @@ namespace Notepad.Api
                 endpoints.MapControllers();
             });
 
-            
         }
     }
 }
