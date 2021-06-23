@@ -1,0 +1,28 @@
+{
+  "name": "notepad",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^0.20.0-0",
+    "bootstrap": "^5.0.0-beta3",
+    "lodash": "^4.17.21",
+    "next": "11.0.0",
+    "react": "17.0.2",
+    "react-bootstrap": "^2.0.0-beta.2",
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.4",
+    "react-select": "^4.3.1",
+    "redux": "^4.1.0",
+    "redux-form": "^8.3.7"
+  },
+  "devDependencies": {
+    "eslint": "7.29.0",
+    "eslint-config-next": "11.0.0"
+  }
+}
