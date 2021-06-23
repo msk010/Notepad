@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Notepad.Application.Interfaces;
 using Notepad.Domain.Entities;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Notepad.Application.Features.NoteFeatures.Commands
             }
             public async Task<int> Handle(UpdateNoteCommand command, CancellationToken cancellationToken)
             {
-                var note = _context.Notes.Where(a => a.Id == command.Id).FirstOrDefault();
+                var note = _context.Notes.Where(a => a.Id == command.Id).Include(n => n.NoteTags).FirstOrDefault();
 
                 if (note == null)
                 {
