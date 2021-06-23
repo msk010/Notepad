@@ -42,6 +42,19 @@ namespace Notepad.Api
                     Title = "Notepad",
                 });
             });
+
+            services.AddCors(options =>
+            {
+                var allowedOrigins = Configuration.GetSection("AllowedOrigins").GetChildren().ToArray()
+                    .Select(c => c.Value).ToArray();
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins(allowedOrigins)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        //.AllowCredentials()
+                        );
+            });
+
             services.AddMvc();
             services.AddFluentValidation();
 
@@ -71,6 +84,7 @@ namespace Notepad.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
