@@ -3,8 +3,12 @@ import NoteGrid from "components/notes/components/NoteGrid";
 import EditNoteModal from "components/notes/components/EditNoteModal";
 import EditTagModal from "components/tags/components/EditTagModal";
 import useSaveModal from "components/useSaveModal";
+import useSearch from "components/useSearch";
 import NoteService from "services/NoteService";
 import TagService from "services/TagService";
+import useService from "services/useService";
+
+const emptyArray = [];
 
 const mapSaveData = (data) => ({
   ...data,
@@ -12,47 +16,65 @@ const mapSaveData = (data) => ({
 });
 
 export default function NotePage() {
-  const saveNote = useSaveModal(
-    NoteService.create,
-    NoteService.update,
-    mapSaveData
-  );
+  const {
+    show: showNoteModal,
+    handleClose: onCloseNoteModal,
+    handleShow: onShowNoteModal,
+    handleSave: onSaveNote,
+    currentData: currentNote,
+    isNew: isNewNote,
+  } = useSaveModal(NoteService.create, NoteService.update, mapSaveData);
 
-  const saveTag = useSaveModal(TagService.create, TagService.update);
+  const {
+    show: showTagModal,
+    handleClose: onCloseTagModal,
+    handleShow: onShowTagModal,
+    handleSave: onSaveTag,
+    currentData: currentTag,
+    isNew: isNewTag,
+  } = useSaveModal(TagService.create, TagService.update);
+
+  const {
+    inProgress,
+    results,
+    onSearch: onSearchNote,
+  } = useSearch("searchNotes", NoteService.search, showNoteModal);
 
   const onDeleteNote = async () => {
-    await NoteService.delete(saveNote.currentData.id);
-    saveNote.handleClose();
+    await NoteService.delete(currentNote.id);
+    onCloseNoteModal();
   };
   const onDeleteTag = async () => {
-    await NoteService.delete(saveTag.currentData.id);
-    saveTag.handleClose();
+    await TagService.delete(currentTag.id);
+    onCloseTagModal();
   };
 
   return (
     <>
       <NoteMenu
-        onShowCreateNoteModal={saveNote.handleShow}
-        onShowCreateTagModal={saveTag.handleShow}
+        onShowCreateNoteModal={onShowNoteModal}
+        onShowCreateTagModal={onShowTagModal}
+        onSearch={onSearchNote}
       />
       <NoteGrid
-        shouldRefresh={saveNote.show}
-        onShowEditModal={saveNote.handleShow}
+        onShowEditModal={onShowNoteModal}
+        results={results}
+        isLoading={inProgress}
       />
       <EditNoteModal
-        show={saveNote.show}
-        onHide={saveNote.handleClose}
-        onSave={saveNote.handleSave}
-        initialValues={saveNote.currentData}
-        isNew={saveNote.isNew}
+        show={showNoteModal}
+        onHide={onCloseNoteModal}
+        onSave={onSaveNote}
+        initialValues={currentNote}
+        isNew={isNewNote}
         onDelete={onDeleteNote}
       />
       <EditTagModal
-        show={saveTag.show}
-        onHide={saveTag.handleClose}
-        onSave={saveTag.handleSave}
-        initialValues={saveTag.currentData}
-        isNew={saveTag.isNew}
+        show={showTagModal}
+        onHide={onCloseTagModal}
+        onSave={onSaveTag}
+        initialValues={currentTag}
+        isNew={isNewTag}
         onDelete={onDeleteTag}
       />
     </>

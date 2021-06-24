@@ -2,21 +2,13 @@ import PropTypes from "prop-types";
 
 import styles from "../../../styles/Home.module.css";
 import NoteItem from "./NoteItem";
-import NoteService from "services/NoteService";
 
-import useService from "services/useService";
 import { Spinner } from "react-bootstrap";
 
-const emptyArray = [];
 function NoteGrid(props) {
-  const { shouldRefresh, onShowEditModal } = props;
-  const { inProgress, results } = useService(
-    NoteService.getAll,
-    emptyArray,
-    shouldRefresh
-  );
+  const { results, isLoading, onShowEditModal } = props;
 
-  if (inProgress) return <Spinner animation="border" />;
+  if (isLoading) return <Spinner animation="border" />;
 
   return (
     <div className={styles.grid}>
@@ -32,8 +24,9 @@ function NoteGrid(props) {
 }
 
 NoteGrid.propTypes = {
-  shouldRefresh: PropTypes.bool,
   onShowEditModal: PropTypes.func,
+  results: PropTypes.array,
+  isLoading: PropTypes.bool,
 };
 
 export default NoteGrid;

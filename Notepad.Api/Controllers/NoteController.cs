@@ -27,6 +27,13 @@ namespace Notepad.Api.Controllers
             return Ok(await _mediator.Send(new GetAllNotesQuery()));
         }
 
+        [HttpPost]
+        [Route("search")]
+        public virtual async Task<IActionResult> Search(SearchNotesQuery query)
+        {
+            return Ok(await _mediator.Send(query));
+        }
+
         [HttpGet]
         [Route("{id}")]
         public virtual async Task<IActionResult> Get(int id)

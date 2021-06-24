@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Notepad.Application.Features.NoteFeatures.Commands;
+using Notepad.Application.Features.NoteFeatures.Queries;
 using Notepad.Application.Features.NoteFeatures.Validators;
 using Notepad.Application.Features.TagFeatures.Validators;
 using System.Reflection;
@@ -22,6 +23,7 @@ namespace Notepad.Application
             services.AddTransient<IValidator<CreateNoteCommand>, CreateNoteCommandValidator>();
             services.AddTransient<IValidator<DeleteNoteByIdCommand>, DeleteNoteCommandValidator>();
             services.AddTransient<IValidator<UpdateNoteCommand>, UpdateNoteCommandValidator>();
+            services.AddTransient<IValidator<SearchNotesQuery>, SearchNotesQueryValidator>();
 
             //Tag validators
             services.AddTransient<IValidator<CreateTagCommand>, CreateTagCommandValidator>();
