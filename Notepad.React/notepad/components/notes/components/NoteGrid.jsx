@@ -1,67 +1,39 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types";
+
 import styles from "../../../styles/Home.module.css";
-import EditNoteModal from "./EditNoteModal";
 import NoteItem from "./NoteItem";
-
 import NoteService from "services/NoteService";
-import useService from "services/useService";
 
+import useService from "services/useService";
 import { Spinner } from "react-bootstrap";
 
 const emptyArray = [];
-
-export default function NoteGrid() {
-  const [show, setShow] = useState(false);
-  const [currentNote, setInitialNote] = useState(null);
+function NoteGrid(props) {
+  const { shouldRefresh, onShowEditModal } = props;
   const { inProgress, results } = useService(
     NoteService.getAll,
     emptyArray,
-    show
+    shouldRefresh
   );
 
-  const handleClose = () => {
-    setShow(false);
-    setInitialNote(null);
-  };
-  const handleShow = (data) => {
-    setShow(true);
-    setInitialNote(data);
-  };
-  const isNew = !currentNote || !currentNote.id;
-
-  const handleSave = async (data) => {
-    const save = isNew ? NoteService.create : NoteService.update;
-
-    const mappedData = {
-      ...data,
-      tagIds: (data.tags || emptyArray).map((t) => t.id),
-    };
-
-    await save(mappedData);
-    handleClose();
-  };
+  if (inProgress) return <Spinner animation="border" />;
 
   return (
-    <>
-      <EditNoteModal
-        show={show}
-        onHide={handleClose}
-        onSave={handleSave}
-        initialValues={currentNote}
-      />
-      <div className={styles.grid}>
-        {inProgress ? (
-          <Spinner animation="border" />
-        ) : (
-          results.map((item) => (
-            <NoteItem
-              key={item.id}
-              note={item}
-              onClick={() => handleShow(item)}
-            />
-          ))
-        )}
-      </div>
-    </>
+    <div className={styles.grid}>
+      {results.map((item) => (
+        <NoteItem
+          key={item.id}
+          note={item}
+          onClick={() => onShowEditModal(item)}
+        />
+      ))}
+    </div>
   );
 }
+
+NoteGrid.propTypes = {
+  shouldRefresh: PropTypes.bool,
+  onShowEditModal: PropTypes.func,
+};
+
+export default NoteGrid;

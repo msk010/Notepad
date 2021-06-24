@@ -24,7 +24,7 @@ namespace Notepad.Application.Features.NoteFeatures.Commands
             }
             public async Task<int> Handle(DeleteNoteByIdCommand command, CancellationToken cancellationToken)
             {
-                var note = await _context.Notes.Where(a => a.Id == command.Id).FirstOrDefaultAsync();
+                var note = await _context.Notes.Where(a => a.Id == command.Id).Include(n => n.NoteTags).FirstOrDefaultAsync();
                 if (note == null) 
                     return default;
 

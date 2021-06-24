@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   FormControl,
   Button,
@@ -6,12 +7,25 @@ import {
   InputGroup,
 } from "react-bootstrap";
 
-export default function NoteMenu() {
+const emptyObject = {};
+
+function NoteMenu(props) {
+  const { onShowCreateNoteModal, onShowCreateTagModal } = props;
   return (
     <ButtonToolbar className="mb-3" aria-label="Toolbar with Button groups">
       <ButtonGroup className="me-2" aria-label="First group">
-        <Button variant="outline-secondary">New note</Button>{' '}
-        <Button variant="outline-secondary">New tag</Button>
+        <Button
+          variant="outline-secondary"
+          onClick={() => onShowCreateNoteModal(emptyObject)}
+        >
+          New Note
+        </Button>{" "}
+        <Button
+          variant="outline-secondary"
+          onClick={() => onShowCreateTagModal(emptyObject)}
+        >
+          New Tag
+        </Button>
       </ButtonGroup>
       <InputGroup>
         <FormControl
@@ -24,3 +38,10 @@ export default function NoteMenu() {
     </ButtonToolbar>
   );
 }
+
+NoteMenu.propTypes = {
+  onShowCreateNoteModal: PropTypes.func,
+  onShowCreateTagModal: PropTypes.func,
+};
+
+export default NoteMenu;

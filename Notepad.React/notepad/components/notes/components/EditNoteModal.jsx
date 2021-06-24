@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { reduxForm } from "redux-form";
 
 import { Button, Form, Modal } from "react-bootstrap";
@@ -6,8 +6,16 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FormControlField, TagSelectField } from "../../ReduxForm";
 
 function EditNoteModal(props) {
-  const { handleSubmit, reset, submitting, onHide, onSave, show, isNew } =
-    props;
+  const {
+    handleSubmit,
+    reset,
+    submitting,
+    onHide,
+    onSave,
+    onDelete,
+    show,
+    isNew,
+  } = props;
 
   return (
     <Modal show={show} onHide={onHide}>
@@ -44,14 +52,14 @@ function EditNoteModal(props) {
             <Button variant="secondary" onClick={reset} disabled={submitting}>
               {isNew ? "Clear Values" : "Restore values"}
             </Button>
-            <Button
-              variant="primary"
-              type="submit"
-              //onClick={onHide}
-              disabled={submitting}
-            >
+            <Button variant="primary" type="submit" disabled={submitting}>
               Save Note
             </Button>
+            {!isNew && (
+              <Button variant="danger" onClick={onDelete}>
+                Delete Note
+              </Button>
+            )}
           </>
         </Modal.Footer>
       </Form>

@@ -1,5 +1,11 @@
-import { Badge } from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 
 export default function NoteTag({ tag }) {
-  return <Badge variant="primary">{tag.name}</Badge>;
+  return (
+    <>
+      <Button variant="secondary" size="sm" disabled>
+        {tag.name}
+      </Button>{" "}
+    </>
+  );
 }

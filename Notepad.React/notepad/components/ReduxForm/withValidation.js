@@ -19,7 +19,7 @@ export default function withValidation() {
             isInvalid={isInvalid}
           />
           <Form.Control.Feedback type="invalid">
-            {error && error.map((e) => <span>{e}</span>)}
+            {error && error.map((e) => <span key={e}>{e}</span>)}
           </Form.Control.Feedback>
         </>
       );

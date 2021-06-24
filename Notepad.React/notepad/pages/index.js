@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css";
 import NoteItem from "components/notes/components/NoteItem";
 import NoteGrid from "components/notes/components/NoteGrid";
 import NoteMenu from "components/notes/components/NoteMenu";
+import NotePage from "components/notes/NotePage";
 
 export default function Home() {
   return (
@@ -18,11 +19,7 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to your Notepad!</h1>
 
-        <p className={styles.description}>
-          <NoteMenu />
-        </p>
-
-        <NoteGrid />
+        <NotePage />
       </main>
 
       <footer className={styles.footer}>
