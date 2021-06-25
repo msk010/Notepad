@@ -13,17 +13,29 @@ import { FormControlField } from "components/ReduxForm";
 
 const emptyObject = {};
 
+export const ListTypes = {
+  Notes: 1,
+  Tags: 2,
+};
+
 function NoteMenu(props) {
   const {
     onShowCreateNoteModal,
     onShowCreateTagModal,
     onSearch,
+    listType,
+    onSwitchList,
 
     //redux-form props
     handleSubmit,
     submitting,
     reset,
   } = props;
+
+  const onClearSearch = () => {
+    reset();
+    return onSearch(emptyObject);
+  };
 
   return (
     <Form noValidate onSubmit={handleSubmit(onSearch)}>
@@ -44,10 +56,18 @@ function NoteMenu(props) {
         </ButtonGroup>
         <ButtonGroup className="me-2" aria-label="Tags">
           <Button
+            active={listType == ListTypes.Tags}
+            onClick={() => onSwitchList(ListTypes.Tags)}
             variant="outline-secondary"
-            onClick={() => onShowCreateTagModal(emptyObject)}
           >
             Tags
+          </Button>
+          <Button
+            active={listType == ListTypes.Notes}
+            onClick={() => onSwitchList(ListTypes.Notes)}
+            variant="outline-secondary"
+          >
+            Notes
           </Button>
         </ButtonGroup>
         <Form.Group role="form" controlId="searchString">
@@ -60,7 +80,7 @@ function NoteMenu(props) {
             <Button
               variant="outline-danger"
               disabled={submitting}
-              onClick={reset}
+              onClick={handleSubmit(onClearSearch)}
               id="btnGroupAddon"
             >
               X
@@ -83,9 +103,11 @@ NoteMenu.propTypes = {
   onShowCreateNoteModal: PropTypes.func,
   onShowCreateTagModal: PropTypes.func,
   onSearch: PropTypes.func,
+  listType: PropTypes.oneOf(Object.values(ListTypes)),
+  onSwitchList: PropTypes.func,
 };
 
 export default reduxForm({
-  form: "searchNotes", // a unique identifier for this form
+  form: "search", // a unique identifier for this form
   enableReinitialize: true,
 })(NoteMenu);

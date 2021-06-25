@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "axios": "^0.20.0-0",
-    "bootstrap": "^5.0.0-beta3",
+    "bootstrap": "^5.0.2",
     "lodash": "^4.17.21",
     "next": "11.0.0",
     "react": "17.0.2",

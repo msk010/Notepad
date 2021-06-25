@@ -6,7 +6,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { FormControlField } from "../../ReduxForm";
 
 function EditTagModal(props) {
-  const { handleSubmit, reset, submitting, onHide, onSave, show, isNew, onDelete } =
+  const { handleSubmit, reset, submitting, onHide, onSave, show, isNew, onDelete, canDelete } =
     props;
 
   return (
@@ -19,6 +19,10 @@ function EditTagModal(props) {
           <Form.Group role="form" controlId="name">
             <Form.Label>Name</Form.Label>
             <FormControlField name="name" type="text" placeholder="Name" />
+          </Form.Group>
+          <Form.Group role="form" controlId="createdOn">
+            <Form.Label>Created on</Form.Label>
+            <FormControlField name="createdOn" type="date" placeholder="Created on" readOnly/>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
@@ -37,7 +41,7 @@ function EditTagModal(props) {
             >
               Save Tag
             </Button>
-            {!isNew && (
+            {!isNew && canDelete && (
               <Button variant="danger" onClick={onDelete}>
                 Delete Tag
               </Button>

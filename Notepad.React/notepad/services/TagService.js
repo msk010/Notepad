@@ -24,4 +24,8 @@ export default class NoteService {
   static getAll() {
     return axios.get(routePrefix + "list").then(returnData);
   }
+
+  static search(model) {
+    return axios.post(routePrefix + "search", model).then(returnData);
+  }
 }

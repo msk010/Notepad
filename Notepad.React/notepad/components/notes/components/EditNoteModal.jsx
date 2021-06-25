@@ -56,7 +56,7 @@ function EditNoteModal(props) {
               Save Note
             </Button>
             {!isNew && (
-              <Button variant="danger" onClick={onDelete}>
+              <Button variant="danger" onClick={handleSubmit(onDelete)} disabled={submitting}>
                 Delete Note
               </Button>
             )}

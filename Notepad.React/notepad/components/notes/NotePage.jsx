@@ -1,12 +1,13 @@
-import NoteMenu from "components/notes/components/NoteMenu";
+import { useState } from "react";
+import NoteMenu, { ListTypes } from "components/notes/components/NoteMenu";
 import NoteGrid from "components/notes/components/NoteGrid";
+import TagGrid from "components/tags/components/TagGrid";
 import EditNoteModal from "components/notes/components/EditNoteModal";
 import EditTagModal from "components/tags/components/EditTagModal";
 import useSaveModal from "components/useSaveModal";
 import useSearch from "components/useSearch";
 import NoteService from "services/NoteService";
 import TagService from "services/TagService";
-import useService from "services/useService";
 
 const emptyArray = [];
 
@@ -34,11 +35,27 @@ export default function NotePage() {
     isNew: isNewTag,
   } = useSaveModal(TagService.create, TagService.update);
 
+  const [currentListType, setListType] = useState(ListTypes.Notes);
+
   const {
-    inProgress,
-    results,
+    inProgress: notesAreLoading,
+    results: noteResults,
     onSearch: onSearchNote,
-  } = useSearch("searchNotes", NoteService.search, showNoteModal);
+  } = useSearch(
+    "search",
+    NoteService.search,
+    showNoteModal && currentListType == ListTypes.Notes
+  );
+
+  const {
+    inProgress: tagsAreLoading,
+    results: tagResults,
+    onSearch: onSearchTag,
+  } = useSearch(
+    "search",
+    TagService.search,
+    showTagModal && currentListType == ListTypes.Tags
+  );
 
   const onDeleteNote = async () => {
     await NoteService.delete(currentNote.id);
@@ -49,18 +66,32 @@ export default function NotePage() {
     onCloseTagModal();
   };
 
+  const onSearch =
+    currentListType == ListTypes.Notes ? onSearchNote : onSearchTag;
+console.log(currentTag)
   return (
     <>
       <NoteMenu
         onShowCreateNoteModal={onShowNoteModal}
         onShowCreateTagModal={onShowTagModal}
-        onSearch={onSearchNote}
+        onSearch={onSearch}
+        onSwitchList={setListType}
+        listType={currentListType}
       />
-      <NoteGrid
-        onShowEditModal={onShowNoteModal}
-        results={results}
-        isLoading={inProgress}
-      />
+      {currentListType == ListTypes.Notes && (
+        <NoteGrid
+          onShowEditModal={onShowNoteModal}
+          results={noteResults}
+          isLoading={notesAreLoading}
+        />
+      )}
+      {currentListType == ListTypes.Tags && (
+        <TagGrid
+          onShowEditModal={onShowTagModal}
+          results={tagResults}
+          isLoading={tagsAreLoading}
+        />
+      )}
       <EditNoteModal
         show={showNoteModal}
         onHide={onCloseNoteModal}
@@ -74,6 +105,7 @@ export default function NotePage() {
         onHide={onCloseTagModal}
         onSave={onSaveTag}
         initialValues={currentTag}
+        canDelete={currentTag.canDelete}
         isNew={isNewTag}
         onDelete={onDeleteTag}
       />

@@ -1,12 +1,14 @@
 import { useState } from "react";
 
+const emptyObject = {};
+
 const useSaveModal = (createService, updateService, mapSaveData) => {
   const [show, setShow] = useState(false);
-  const [currentData, setInitial] = useState(null);
+  const [currentData, setInitial] = useState(emptyObject);
 
   const handleClose = () => {
     setShow(false);
-    setInitial(null);
+    setInitial(emptyObject);
   };
   const handleShow = (data) => {
     setShow(true);
