@@ -13,13 +13,15 @@ namespace Notepad.Application.Features.NoteFeatures.Commands
         public class CreateNoteCommandHandler : IRequestHandler<CreateTagCommand, int>
         {
             private readonly INotepadDbContext _context;
-            public CreateNoteCommandHandler(INotepadDbContext context)
+            private readonly IUserContext _userContext;
+            public CreateNoteCommandHandler(INotepadDbContext context, IUserContext userContext)
             {
                 _context = context;
+                _userContext = userContext;
             }
             public async Task<int> Handle(CreateTagCommand command, CancellationToken cancellationToken)
             {
-                var tag = new Tag(command.Name, 1); //todo user
+                var tag = new Tag(command.Name, _userContext.UserId);
 
                 _context.Tags.Add(tag);
                 await _context.SaveChangesAsync();

@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notepad.Application.Features.NoteFeatures.Commands;
 using Notepad.Application.Features.NoteFeatures.Queries;
+using Notepad.Application.Features.TagFeatures.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace Notepad.Api.Controllers
 {
     [Route("api/tag")]
     [ApiController]
+    [Authorize]
     public class TagController : ControllerBase
     {
         private IMediator _mediator;
@@ -25,6 +28,13 @@ namespace Notepad.Api.Controllers
         public virtual async Task<IActionResult> GetList()
         {
             return Ok(await _mediator.Send(new GetAllTagsQuery()));
+        }
+
+        [HttpPost]
+        [Route("search")]
+        public virtual async Task<IActionResult> Search(SearchTagsQuery query)
+        {
+            return Ok(await _mediator.Send(query));
         }
 
         [HttpGet]

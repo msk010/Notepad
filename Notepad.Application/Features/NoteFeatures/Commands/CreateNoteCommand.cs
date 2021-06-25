@@ -24,13 +24,15 @@ namespace Notepad.Application.Features.NoteFeatures.Commands
         public class CreateNoteCommandHandler : IRequestHandler<CreateNoteCommand, int>
         {
             private readonly INotepadDbContext _context;
-            public CreateNoteCommandHandler(INotepadDbContext context)
+            private readonly IUserContext _userContext;
+            public CreateNoteCommandHandler(INotepadDbContext context, IUserContext userContext)
             {
                 _context = context;
+                _userContext = userContext;
             }
             public async Task<int> Handle(CreateNoteCommand command, CancellationToken cancellationToken)
             {
-                var note = new Note(command.Title, command.Content, command.TagIds, 1); //todo user
+                var note = new Note(command.Title, command.Content, command.TagIds, _userContext.UserId);
 
                 _context.Notes.Add(note);
                 await _context.SaveChangesAsync();

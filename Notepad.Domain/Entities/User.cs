@@ -26,5 +26,11 @@ namespace Notepad.Domain.Entities
 
         public virtual ICollection<Tag> Tags { get; private set; }
         public virtual ICollection<Note> Notes { get; private set; }
+
+        public void Update(string firstName, string secondName)
+        {
+            FirstName = firstName;
+            SecondName = secondName;
+        }
     }
 }

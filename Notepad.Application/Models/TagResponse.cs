@@ -14,5 +14,7 @@ namespace Notepad.Application.Models
         public DateTimeOffset CreatedOn { get; set; }
         public DateTimeOffset? UpdatedOn { get; set; }
         public UserResponse CreatedBy { get; set; }
+
+        public bool CanDelete { get; set; }
     }
 }

@@ -17,9 +17,12 @@ namespace Notepad.Application.Features.NoteFeatures.Queries
         public class SearchNotesQueryHandler : IRequestHandler<SearchNotesQuery, IEnumerable<NoteResponse>>
         {
             private readonly INotepadReadDbConnection _dbConnection;
-            public SearchNotesQueryHandler(INotepadReadDbConnection dbConnection)
+            private readonly IUserContext _userContext;
+
+            public SearchNotesQueryHandler(INotepadReadDbConnection dbConnection, IUserContext userContext)
             {
                 _dbConnection = dbConnection;
+                _userContext = userContext;
             }
             public async Task<IEnumerable<NoteResponse>> Handle(SearchNotesQuery query, CancellationToken cancellationToken)
             {
@@ -35,10 +38,12 @@ namespace Notepad.Application.Features.NoteFeatures.Queries
                     WHERE @SearchString IS NULL OR (
                           n.Title LIKE CONCAT('%',@SearchString,'%') OR
                           n.Content LIKE CONCAT('%',@SearchString,'%') 
-                    )
+                    ) AND n.UserId = @UserId
                 ";
 
                 var types = new Type[] { typeof(NoteResponse), typeof(TagResponse), typeof(UserResponse), typeof(UserResponse) };
+
+                var parameters = new { query.SearchString, _userContext.UserId };
 
                 NoteResponse map(object[] objects)
                 {
@@ -59,7 +64,7 @@ namespace Notepad.Application.Features.NoteFeatures.Queries
                     return result;
                 }
 
-                await _dbConnection.QueryAsync(sql, types, map, splitOn: "TagId,TagUserId,NoteUserId", param: query);
+                await _dbConnection.QueryAsync(sql, types, map, splitOn: "TagId,TagUserId,NoteUserId", param: parameters);
 
                 return lookup.Values;
             }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notepad.Application.Features.NoteFeatures.Commands;
@@ -12,6 +13,7 @@ namespace Notepad.Api.Controllers
 {
     [Route("api/note")]
     [ApiController]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private IMediator _mediator;

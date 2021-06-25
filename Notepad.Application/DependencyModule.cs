@@ -1,10 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Notepad.Application.Configs;
+using Notepad.Application.Context;
 using Notepad.Application.Features.NoteFeatures.Commands;
 using Notepad.Application.Features.NoteFeatures.Queries;
 using Notepad.Application.Features.NoteFeatures.Validators;
 using Notepad.Application.Features.TagFeatures.Validators;
+using Notepad.Application.Interfaces;
 using System.Reflection;
 
 namespace Notepad.Application
@@ -29,6 +32,13 @@ namespace Notepad.Application
             services.AddTransient<IValidator<CreateTagCommand>, CreateTagCommandValidator>();
             services.AddTransient<IValidator<DeleteTagByIdCommand>, DeleteTagCommandValidator>();
             services.AddTransient<IValidator<UpdateTagCommand>, UpdateTagCommandValidator>();
+
+            //User context
+            services.AddScoped<IUserContext, UserContext>();
+
+            //Configs
+            services.AddTransient<AuthConfig>();
+
         }
     }
 }
