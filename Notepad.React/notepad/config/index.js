@@ -1,3 +1,5 @@
-import devConfig from "./config.dev";
+import getConfig from "next/config";
 
-export default devConfig;
+const { publicRuntimeConfig } = getConfig();
+
+export default publicRuntimeConfig;
