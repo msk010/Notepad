@@ -38,7 +38,7 @@ namespace Notepad.Application.Features.NoteFeatures.Queries
                     WHERE @SearchString IS NULL OR (
                           n.Title LIKE CONCAT('%',@SearchString,'%') OR
                           n.Content LIKE CONCAT('%',@SearchString,'%') 
-                    ) AND n.UserId = @UserId
+                    ) AND n.CreatedById = @UserId
                 ";
 
                 var types = new Type[] { typeof(NoteResponse), typeof(TagResponse), typeof(UserResponse), typeof(UserResponse) };

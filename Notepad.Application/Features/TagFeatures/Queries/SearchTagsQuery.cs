@@ -34,7 +34,7 @@ namespace Notepad.Application.Features.TagFeatures.Queries
                     INNER JOIN Users tu on tu.Id = t.CreatedById
                     WHERE @SearchString IS NULL OR (
                           t.Name LIKE CONCAT('%',@SearchString,'%')
-                    ) AND t.UserId = @UserId
+                    ) AND t.CreatedById = @UserId
                 ";
                 var types = new Type[] { typeof(TagResponse), typeof(UserResponse) };
                 var parameters = new { query.SearchString, _userContext.UserId };
