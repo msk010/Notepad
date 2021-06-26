@@ -16,6 +16,12 @@ using Notepad.Application;
 using Notepad.Intrastructure.EFCore;
 using Notepad.Infrastructure.Dapper;
 using FluentValidation.AspNetCore;
+using Notepad.Api.Middlewares;
+using Notepad.Application.Configs;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Notepad.Api
 {
@@ -47,15 +53,47 @@ namespace Notepad.Api
             {
                 var allowedOrigins = Configuration.GetSection("AllowedOrigins").GetChildren().ToArray()
                     .Select(c => c.Value).ToArray();
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins(allowedOrigins)
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        //.AllowCredentials()
-                        );
+                options.AddPolicy("CorsPolicy", builder => builder
+                    .WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                );
             });
 
             services.AddMvc();
+
+            var authConfig = new AuthConfig();
+            Configuration.Bind("AuthConfig", authConfig);
+
+            services.AddAuthentication(sharedOptions =>
+            {
+                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                sharedOptions.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+
+                options.ClientId = authConfig.ClientId;
+                options.ClientSecret = authConfig.ClientSecret;
+            })
+            .AddCookie();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(options =>
+            {
+                options.RootPath = @"notepad\out";
+            });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddFluentValidation();
 
             services.AddApplication();
@@ -85,12 +123,40 @@ namespace Notepad.Api
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
-
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();            
+
+            app.UseMiddleware<UserContextMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpaStaticFiles();
+
+            app.Use(async (context, next) =>
+            {
+                if (!context.User.Identity.IsAuthenticated)
+                {
+                    await context.ChallengeAsync();
+                }
+                else
+                {
+                    await next();
+                }
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = @"..\Notepad.React\notepad\";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                }
             });
 
         }
