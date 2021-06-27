@@ -63,23 +63,7 @@ namespace Notepad.Api
 
             services.AddMvc();
 
-            var authConfig = new AuthConfig();
-            Configuration.Bind("AuthConfig", authConfig);
-
-            services.AddAuthentication(sharedOptions =>
-            {
-                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                sharedOptions.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-            .AddGoogle(options =>
-            {
-                IConfigurationSection googleAuthNSection =
-                    Configuration.GetSection("Authentication:Google");
-
-                options.ClientId = authConfig.ClientId;
-                options.ClientSecret = authConfig.ClientSecret;
-            })
-            .AddCookie();
+            ConfigureAuthentication(services);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(options =>
@@ -99,6 +83,27 @@ namespace Notepad.Api
             services.AddApplication();
             services.AddEFCore(Configuration);
             services.AddDapper(Configuration);
+        }
+
+        protected virtual void ConfigureAuthentication(IServiceCollection services)
+        {
+            var authConfig = new AuthConfig();
+            Configuration.Bind("AuthConfig", authConfig);
+
+            services.AddAuthentication(sharedOptions =>
+            {
+                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                sharedOptions.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+
+                options.ClientId = authConfig.ClientId;
+                options.ClientSecret = authConfig.ClientSecret;
+            })
+            .AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
