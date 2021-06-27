@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad.Application", "Note
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad.Domain", "Notepad.Domain\Notepad.Domain.csproj", "{56630777-1202-42FB-8D39-F94F1ADC2F32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notepad.React", "Notepad.React\Notepad.React.csproj", "{B4F16015-386E-4677-8229-A68139722806}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad.React", "Notepad.React\Notepad.React.csproj", "{B4F16015-386E-4677-8229-A68139722806}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notepad.Tests.Unit", "Notepad.Tests.Unit\Notepad.Tests.Unit.csproj", "{55414706-DBCF-4653-9D9E-E9229FCC476A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{B4F16015-386E-4677-8229-A68139722806}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4F16015-386E-4677-8229-A68139722806}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4F16015-386E-4677-8229-A68139722806}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55414706-DBCF-4653-9D9E-E9229FCC476A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55414706-DBCF-4653-9D9E-E9229FCC476A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55414706-DBCF-4653-9D9E-E9229FCC476A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55414706-DBCF-4653-9D9E-E9229FCC476A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{A9F0D4B8-3118-457E-911C-16C5FA668DDB} = {E888BA16-5473-4E59-BFFD-0BF32CB9BD4D}
 		{56630777-1202-42FB-8D39-F94F1ADC2F32} = {3BD3B86C-F23A-4E18-AF1C-BF52A057B258}
 		{B4F16015-386E-4677-8229-A68139722806} = {0313B7B2-388B-4C15-BDBB-CEB8EE617B97}
+		{55414706-DBCF-4653-9D9E-E9229FCC476A} = {FF4F7E76-7627-43BC-A863-B80AB01D2BA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C44670E2-56BD-4A1E-A222-48568E543E09}

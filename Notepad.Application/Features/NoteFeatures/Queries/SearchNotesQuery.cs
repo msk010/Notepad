@@ -31,40 +31,36 @@ namespace Notepad.Application.Features.NoteFeatures.Queries
                 var sql = @"
                     SELECT n.*, t.Id as TagId, t.*, tu.Id as TagUserId, tu.*, nu.Id as NoteUserId, nu.*
                     FROM Notes n
-                    INNER JOIN NoteTag nt ON n.Id = nt.NoteId   
-                    INNER JOIN Tags t ON t.Id = nt.TagId   
-                    INNER JOIN Users tu on tu.Id = t.CreatedById                 
-                    INNER JOIN Users nu on nu.Id = n.CreatedById 
+                    LEFT JOIN NoteTag nt ON n.Id = nt.NoteId   
+                    LEFT JOIN Tags t ON t.Id = nt.TagId   
+                    LEFT JOIN Users tu on tu.Id = t.CreatedById                 
+                    LEFT JOIN Users nu on nu.Id = n.CreatedById 
                     WHERE @SearchString IS NULL OR (
                           n.Title LIKE CONCAT('%',@SearchString,'%') OR
                           n.Content LIKE CONCAT('%',@SearchString,'%') 
                     ) AND n.CreatedById = @UserId
                 ";
 
-                var types = new Type[] { typeof(NoteResponse), typeof(TagResponse), typeof(UserResponse), typeof(UserResponse) };
-
                 var parameters = new { query.SearchString, _userContext.UserId };
 
-                NoteResponse map(object[] objects)
+                NoteResponse map(NoteResponse note, TagResponse tag, UserResponse noteUser, UserResponse tagUser)
                 {
-                    var note = (NoteResponse)objects[0];
                     if (!lookup.TryGetValue(note.Id, out NoteResponse result))
                     {
-                        var noteUser = (UserResponse)objects[2];
                         note.CreatedBy = noteUser;
 
                         lookup.Add(note.Id, result = note);
                     }
 
-                    var tag = (TagResponse)objects[1];
-                    tag.CreatedBy = (UserResponse)objects[3];
+                    tag.CreatedBy = tagUser;
 
-                    result.Tags.Add(tag);
+                    if (tag.Id > 0) 
+                        result.Tags.Add(tag);
 
                     return result;
                 }
 
-                await _dbConnection.QueryAsync(sql, types, map, splitOn: "TagId,TagUserId,NoteUserId", param: parameters);
+                await _dbConnection.QueryAsync<NoteResponse, TagResponse, UserResponse, UserResponse, NoteResponse>(sql, map, parameters, splitOn: "TagId,TagUserId,NoteUserId");
 
                 return lookup.Values;
             }

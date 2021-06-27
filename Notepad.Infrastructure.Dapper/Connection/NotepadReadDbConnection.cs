@@ -14,7 +14,7 @@ namespace Notepad.Infrastructure.Dapper.Connection
     public class NotepadReadDbConnection : INotepadReadDbConnection, IDisposable
     {
         private readonly IDbConnection _dbConnection;
-        public NotepadReadDbConnection(IDbConnection dbConnection, IConfiguration configuration)
+        public NotepadReadDbConnection(IDbConnection dbConnection)
         {
             _dbConnection = dbConnection;
         }
@@ -42,6 +42,11 @@ namespace Notepad.Infrastructure.Dapper.Connection
         }
 
         public async Task<IReadOnlyList<TReturn>> QueryAsync<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default, string splitOn = "Id")
+        {
+            return (await _dbConnection.QueryAsync(sql, map, param, transaction, splitOn: splitOn)).AsList();
+        }
+
+        public async Task<IReadOnlyList<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, object param = null, IDbTransaction transaction = null, CancellationToken cancellationToken = default, string splitOn = "Id")
         {
             return (await _dbConnection.QueryAsync(sql, map, param, transaction, splitOn: splitOn)).AsList();
         }
