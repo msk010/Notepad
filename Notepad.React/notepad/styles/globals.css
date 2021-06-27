@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.form-field {
+  padding: 0;
+}

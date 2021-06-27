@@ -11,8 +11,8 @@ const getOptionLabel = (option) => option.name;
 const getOptionValue = (option) => option.id;
 
 const InputSelect = ({ className, ...others }) => (
-  <div tabIndex="1" className={className}>
-    <Select {...others} />
+  <div id={others.name} tabIndex="1" className={`${className} form-field`}>
+    <Select {...others} for={others.name} />
   </div>
 );
 
@@ -22,19 +22,6 @@ export default function TagSelect({ input: { value, onChange }, ...others }) {
     emptyArray,
     emptyArray
   );
-  // const formControlRef = useRef(null);
-
-  // const onClick = () => {
-  //   debugger;
-  //   console.log(formControlRef);
-  //   formControlRef.current.focus();
-  // };
-
-  // formControlRef && formControlRef.current && formControlRef.current.focus();
-  // formControlRef &&
-  //   formControlRef.current &&
-  //   console.log(findDOMNode(formControlRef.current)) &&
-  //   findDOMNode(formControlRef.current).focus();
 
   return (
     <Form.Control

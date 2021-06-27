@@ -30,6 +30,7 @@ function NoteMenu(props) {
     handleSubmit,
     submitting,
     reset,
+    pristine,
   } = props;
 
   const onClearSearch = () => {
@@ -77,14 +78,16 @@ function NoteMenu(props) {
               type="text"
               placeholder="Search..."
             />
-            <Button
-              variant="outline-danger"
-              disabled={submitting}
-              onClick={handleSubmit(onClearSearch)}
-              id="btnGroupAddon"
-            >
-              X
-            </Button>
+            {!pristine && (
+              <Button
+                variant="outline-danger"
+                disabled={submitting}
+                onClick={handleSubmit(onClearSearch)}
+                id="btnGroupAddon"
+              >
+                X
+              </Button>
+            )}
             <Button
               variant="outline-secondary"
               type="submit"

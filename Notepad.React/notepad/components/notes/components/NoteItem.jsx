@@ -12,9 +12,15 @@ export default function NoteItem({ note, onClick }) {
         ))}
       </div>
       <h2>{note.title} &rarr;</h2>
-      <p className="text-secondary">Created on: {convertDate(note.createdOn)}</p>
-      {note.updatedOn && <p className="text-secondary">Updated on: {convertDate(note.updatedOn)}</p>}
-      <p>{note.content}</p>
+      <p className="text-secondary">
+        Created on: {convertDate(note.createdOn)}
+      </p>
+      {note.updatedOn && (
+        <p className="text-secondary">
+          Updated on: {convertDate(note.updatedOn)}
+        </p>
+      )}
+      <p dangerouslySetInnerHTML={{ __html: note.content }} />
     </a>
   );
 }

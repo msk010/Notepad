@@ -3,7 +3,11 @@ import { reduxForm } from "redux-form";
 
 import { Button, Form, Modal } from "react-bootstrap";
 
-import { FormControlField, TagSelectField } from "../../ReduxForm";
+import {
+  FormControlField,
+  TagSelectField,
+  RichTextBoxField,
+} from "../../ReduxForm";
 
 function EditNoteModal(props) {
   const {
@@ -31,13 +35,7 @@ function EditNoteModal(props) {
 
           <Form.Group role="form" controlId="content">
             <Form.Label>Content</Form.Label>
-            <FormControlField
-              name="content"
-              type="textarea"
-              placeholder="Content"
-              as="textarea"
-              rows={3}
-            />
+            <RichTextBoxField name="content" />
           </Form.Group>
           <Form.Group role="form" controlId="tags">
             <Form.Label>Tags</Form.Label>
@@ -56,7 +54,11 @@ function EditNoteModal(props) {
               Save Note
             </Button>
             {!isNew && (
-              <Button variant="danger" onClick={handleSubmit(onDelete)} disabled={submitting}>
+              <Button
+                variant="danger"
+                onClick={handleSubmit(onDelete)}
+                disabled={submitting}
+              >
                 Delete Note
               </Button>
             )}
